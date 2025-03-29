@@ -23,7 +23,7 @@ fun App() {
 
         Column {
             TopAppBar(
-                title = { Text("My App") },
+                title = { Text("ToDo Desktop") },
                 actions = {
                     Button(onClick = { appViewModel.navigateTo(AppScreen.Home)}){
                         Text("Main")
