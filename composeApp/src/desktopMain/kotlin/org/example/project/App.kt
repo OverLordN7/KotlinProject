@@ -6,24 +6,24 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import org.example.project.navigation.AppScreen
 import org.example.project.screens.HomeScreen
 import org.example.project.screens.SettingsScreen
-import org.example.project.viewmodel.AppViewModel
-import org.example.project.viewmodel.HomeViewModel
+import org.example.project.viewmodel.AppContainer
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
-        val viewModel = remember { HomeViewModel() }
-        val appViewModel = remember { AppViewModel() }
 
+    val container = AppContainer()
+    val homeViewModel = container.homeViewModel
+    val appViewModel = container.appViewModel
+
+    MaterialTheme {
         Column {
             TopAppBar(
-                title = { Text("My App") },
+                title = { Text("ToDo Desktop") },
                 actions = {
                     Button(onClick = { appViewModel.navigateTo(AppScreen.Home)}){
                         Text("Main")
@@ -35,7 +35,7 @@ fun App() {
             )
 
             when(appViewModel.currentScreen){
-                AppScreen.Home -> HomeScreen(viewModel = viewModel)
+                AppScreen.Home -> HomeScreen(viewModel = homeViewModel)
                 AppScreen.Settings -> SettingsScreen(onBack = {
                     appViewModel.navigateTo(AppScreen.Home)
                 })
