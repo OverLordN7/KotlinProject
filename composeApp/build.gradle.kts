@@ -33,6 +33,12 @@ kotlin {
 
 
         }
+
+        val desktopTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
     }
 }
 dependencies {

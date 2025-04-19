@@ -7,13 +7,15 @@ import kotlinx.datetime.toLocalDateTime
 import org.example.project.model.Note
 import org.example.project.storage.NoteStorage
 
-class HomeViewModel {
+class HomeViewModel(
+    private val noteStorage: NoteStorage
+) {
     private var nextId = 1
     var notes = mutableStateListOf<Note>()
         private set
 
     init {
-        notes.addAll(NoteStorage.loadNotes())
+        notes.addAll(noteStorage.loadNotes())
         nextId = (notes.maxOfOrNull { it.id } ?: 0) + 1
     }
 
@@ -29,12 +31,12 @@ class HomeViewModel {
                 colorHex = listOf("#FFEBEE", "#E3F2FD", "#E8F5E9", "#FFFDE7").random()
             )
             notes.add(note)
-            NoteStorage.saveNotes(notes)
+            noteStorage.saveNotes(notes)
         }
     }
 
     fun deleteNote(note: Note){
         notes.remove(note)
-        NoteStorage.saveNotes(notes)
+        noteStorage.saveNotes(notes)
     }
 }
