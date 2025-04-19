@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.components.NoteItem
+import org.example.project.model.Note
 import org.example.project.viewmodel.HomeViewModel
 
 @Composable
@@ -28,6 +30,7 @@ fun HomeScreen(viewModel: HomeViewModel, modifier: Modifier = Modifier){
     var text by remember { mutableStateOf("") }
 
     Column(modifier = modifier.padding(16.dp)) {
+
         Text("New note", fontSize = 18.sp)
 
         TextField(
@@ -58,10 +61,31 @@ fun HomeScreen(viewModel: HomeViewModel, modifier: Modifier = Modifier){
 
         Spacer(modifier = modifier.height(16.dp))
 
-        LazyColumn{
-            items(viewModel.notes) { note->
-                NoteItem(note = note, onDelete = {viewModel.deleteNote(it)})
+        //field for search
+        OutlinedTextField(
+            value = viewModel.searchQuery,
+            onValueChange = {viewModel.updateSearchQuery(it)},
+            label = { Text("Note's search") },
+            modifier = modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        //List of filtrated notes
+        LazyColumn {
+            items(viewModel.filteredNotes){ note ->
+                NoteItem(
+                    note = note,
+                    onDelete = { viewModel.deleteNote(note)}
+                )
+                Spacer(modifier = modifier.height(8.dp))
             }
         }
+
+//        LazyColumn{
+//            items(viewModel.notes) { note->
+//                NoteItem(note = note, onDelete = {viewModel.deleteNote(it)})
+//            }
+//        }
     }
 }
